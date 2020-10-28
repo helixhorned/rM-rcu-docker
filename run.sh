@@ -34,13 +34,19 @@ fi
 
 ## ----------
 
+RcuDataDirSuffix=".local/share/davisr/rcu"
+
+# Make sure the RCU data directory is owned by us instead of root if it were
+# created by Docker.
+mkdir -p "$HOME/$RcuDataDirSuffix"
+
 docker run -it --rm \
        --net=host \
        --hostname=rM-rcu \
        --add-host='remarkable:10.11.99.1' \
        -e DISPLAY \
        -v "$HOME/.Xauthority:$guestHome/.Xauthority:ro" \
-       -v "$HOME/.local/share/davisr/rcu:$guestHome/.local/share/davisr/rcu" \
+       -v "$HOME/$RcuDataDirSuffix:$guestHome/$RcuDataDirSuffix" \
        "${MountArgs[@]}" \
        "${EntryPointArgs[@]}" \
        remarkable-rcu:$DEFAULT_RCU_VERSION \
