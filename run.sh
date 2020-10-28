@@ -18,10 +18,14 @@ fi
 DEFAULT_RCU_VERSION=r2020-003
 
 guestHome="/home/$USER"
+OutDirSuffix="Documents/rM-rcu-docker-out"
+
+mkdir -p "$HOME/$OutDirSuffix"
 
 # TODO: make this configurable somehow?
 MountArgs=( \
   -v "$HOME/Documents:$guestHome/Documents:ro" \
+  -v "$HOME/$OutDirSuffix:$guestHome/$OutDirSuffix" \
 )
 
 if [ $runShell = true ]; then
