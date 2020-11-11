@@ -26,10 +26,20 @@ RUN adduser --disabled-password --uid $UID $USER
 ENV DISPLAY=:0
 ENV LANG=en_US.UTF-8
 
-USER $USER
 WORKDIR /home/$USER
 
 ## Copy RCU source
 
+# NOTE: the created files are owned by root.
 COPY /rcu rcu
 WORKDIR /home/$USER/rcu/src
+
+# Copy the license file so that RCU can display it in "About RCU" pane -> "Licenses" tab.
+# The text differs from that of 3.8.5 packaged with the RCU source: for example, this here
+# has a "Debian packaging" header, a section "A. HISTORY OF THE SOFTWARE" (noted as "as
+# found in LICENSE in the original source" though) and is shorter (~320 lines vs. ~800).
+# However, we *are* using the packaged Python, so it seems reasonable to present to the user
+# the according license.
+RUN cp -a /usr/share/doc/python3/copyright licenses/COPYING_PYTHON_3_8_6
+
+USER $USER
