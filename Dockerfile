@@ -9,7 +9,7 @@ RUN apt update
 RUN apt install -y language-pack-en-base
 
 RUN apt install -y libgl1
-# r2020.003:
+# r2020-003:
 RUN apt install -y libxcb-xinerama0 fontconfig
 
 ## Required Python modules
@@ -26,13 +26,12 @@ RUN adduser --disabled-password --uid $UID $USER
 ENV DISPLAY=:0
 ENV LANG=en_US.UTF-8
 
-WORKDIR /home/$USER
+WORKDIR /usr/local
 
 ## Copy RCU source
 
-# NOTE: the created files are owned by root.
 COPY /rcu rcu
-WORKDIR /home/$USER/rcu/src
+WORKDIR /usr/local/rcu/src
 
 # Copy the license file so that RCU can display it in "About RCU" pane -> "Licenses" tab.
 # The text differs from that of 3.8.5 packaged with the RCU source: for example, this here
