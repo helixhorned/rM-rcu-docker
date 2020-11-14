@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DavisrConfigDirSuffix=".config/davisr"
+OurConfFile="$HOME/$DavisrConfigDirSuffix/rcu-docker.conf"
+
 runShell=
 if [ -z "$1" ]; then
     runShell=false
@@ -8,7 +11,20 @@ elif [ x"$1" = x"--shell" ]; then
 fi
 
 if [ -z "$runShell" ]; then
-    echo "Usage: $0 [--shell]"
+    echo "Usage: $0 [--shell|--help]"
+    echo
+    echo "  A configuration file '$OurConfFile'"
+    echo "  may be created manually containing lines of the form"
+    echo "      mount-ro=<directory-suffix>"
+    echo "  or"
+    echo "      mount-rw=<directory-suffix>"
+    echo "  (without leading whitespace) specifying directories under the"
+    echo "  host home directory to be mounted into the container."
+    echo "  For each <directory-suffix>, the path '\$HOME/<directory-suffix>'"
+    echo "  must be canonical: redundant slashes, symlinks, '.' or '..'"
+    echo "  are not allowed."
+    echo
+    # TODO: allow read-only '.' (that is, mapping the whole home directory)?
     exit 1
 fi
 
@@ -18,15 +34,64 @@ fi
 DEFAULT_RCU_VERSION=r2020-003
 
 guestHome="/home/$USER"
-OutDirSuffix="Documents/rM-rcu-docker-out"
 
-mkdir -p "$HOME/$OutDirSuffix"
+MountArgs=()
 
-# TODO: make this configurable somehow?
-MountArgs=( \
-  -v "$HOME/Documents:$guestHome/Documents:ro" \
-  -v "$HOME/$OutDirSuffix:$guestHome/$OutDirSuffix" \
-)
+if [ -f "$OurConfFile" ]; then
+    mountDirSuffixes=()
+    mountKinds=()
+
+    lines=()
+    mapfile -t lines < "$OurConfFile"
+    lineCount="${#lines[@]}"
+    for ((i=0; i < lineCount; i++)); do
+        line="${lines[$i]}"
+        location="$OurConfFile:$((i+1))"
+        ErrorSuffix="See '$0 --help' for the expected format."
+
+        if [[ ! "$line" =~ ^mount-r[ow]=.+$ ]]; then
+            echo "ERROR: $location: malformed line." 1>&2
+            echo "       $ErrorSuffix" 1>&2
+            exit 1
+        fi
+
+        kind="${line:6:2}"
+        dirSuffix="${line:9}"
+
+        hostDir="$HOME/$dirSuffix"
+        realHostDir="$(realpath --quiet -e "$hostDir")"
+        if [ x"$realHostDir" != x"$hostDir" ]; then
+            echo "ERROR: $location: invalid directory suffix." 1>&2
+            echo "       (Does not point to an existing directory or is not canonical.)" 1>&2
+            echo "       $ErrorSuffix" 1>&2
+            exit 1
+        fi
+
+        case "$kind" in
+            ro|rw)
+                n=${#mountDirSuffixes[@]}
+                mountDirSuffixes[$n]="$dirSuffix"
+                mountKinds[$n]="$kind"
+                ;;
+        esac
+    done
+
+    n=${#mountDirSuffixes[@]}
+
+    if [ "$n" -ne 0 ]; then
+        echo "INFO: Mounts from '$HOME' into container '$guestHome':"
+        for ((i=0; i < n; i++)) do
+            dirSuffix="${mountDirSuffixes[$i]}"
+            kind="${mountKinds[$i]}"
+            echo "  $kind: $dirSuffix"
+
+            j="$((2*i))"
+            k="$((2*i+1))"
+            MountArgs[$j]='-v'
+            MountArgs[$k]="$HOME/$dirSuffix:$guestHome/$dirSuffix:$kind"
+        done
+    fi
+fi
 
 if [ $runShell = true ]; then
     EntryPointArgs=()
@@ -38,7 +103,6 @@ fi
 
 ## ----------
 
-DavisrConfigDirSuffix=".config/davisr"
 RcuDataDirSuffix=".local/share/davisr/rcu"
 
 # Make sure the RCU data directory and the directory containing rcu.conf is owned by us
