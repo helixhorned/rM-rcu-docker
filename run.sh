@@ -132,7 +132,7 @@ if [ -e "$rcuConf" ]; then
     fi
 fi
 
-docker run -it --rm \
+exec docker run -it --rm \
        --net=host \
        --hostname=rM-rcu \
        --add-host='remarkable:10.11.99.1' \

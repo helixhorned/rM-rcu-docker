@@ -69,7 +69,7 @@ fullName="$IMAGE_NAME":"$IMAGE_TAG"
 echo "Building Docker image '$fullName'..." 1>&2
 
 export DOCKER_BUILDKIT=1
-docker build \
+exec docker build \
        --tag "$fullName" \
        --build-arg USER="$USER" --build-arg UID="$(id -u)" \
        -f "$thisDir/Dockerfile" \
