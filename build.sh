@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 source_rcu_tar="$1"
 
@@ -56,14 +56,25 @@ if ! source_rcu_tar=$(realpath "$source_rcu_tar"); then
     exit 101
 fi
 
+# Will be used for the path to the Dockerfile:
 thisDir="$(pwd)"
-cd "$tempDir" || (echo "INTERNAL ERROR" 1>&2; exit 200)
+
+if ! cd "$tempDir"; then
+    echo "INTERNAL ERROR: failed changing into temporary directory." 1>&2
+    exit 201
+fi
 
 ## --------------------
 
 echo "Extracting from source archive..." 1>&2
 
-tar xf "$source_rcu_tar" --strip-components=1 "$STRIP_DIR/rcu/"
+# Do not extract imx_usb binaries since we will be building our own.
+# Keep 'imx_usb.conf' though.
+tarOpts=("--strip-components=1" "$STRIP_DIR/rcu/" "--exclude=*/recovery_os_build/imx_usb.[flmsw]*")
+if ! tar xf "$source_rcu_tar" "${tarOpts[@]}"; then
+    echo "ERROR: failed extracting RCU source code." 1>&2
+    exit 102
+fi
 
 fullName="$IMAGE_NAME":"$IMAGE_TAG"
 echo "Building Docker image '$fullName'..." 1>&2

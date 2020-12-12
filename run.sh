@@ -21,8 +21,8 @@ if [ -z "$runShell" ]; then
     echo "  (without leading whitespace) specifying directories under the"
     echo "  host home directory to be mounted into the container."
     echo "  For each <directory-suffix>, the path '\$HOME/<directory-suffix>'"
-    echo "  must be canonical: redundant slashes, symlinks, '.' or '..'"
-    echo "  are not allowed."
+    echo "  must be canonical: redundant slashes, symlinks, and '.' or '..'"
+    echo "  as components are not allowed."
     echo
     # TODO: allow read-only '.' (that is, mapping the whole home directory)?
     exit 1
