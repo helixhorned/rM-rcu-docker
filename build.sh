@@ -79,9 +79,21 @@ fi
 fullName="$IMAGE_NAME":"$IMAGE_TAG"
 echo "Building Docker image '$fullName'..." 1>&2
 
+machine=$(uname -m)
+if [ x"$machine" = x'aarch64' ]; then
+    imx_usb_sha256=ce100971f0ce32fa014970a1ee990550a302bf81d05bfadfd2c19702618e465e
+elif [ x"$machine" = x'x86_64' ]; then
+    imx_usb_sha256=b2e0abd4578fc02e9d19e9897b170f2fe42bbabcf12c242657e1f80ab6754cb0
+else
+    echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2
+    echo "INFO: consider contacting the rM-rcu-docker maintainer." 1>&2
+    imx_usb_sha256='.'
+fi
+
 export DOCKER_BUILDKIT=1
 exec docker build \
        --tag "$fullName" \
        --build-arg USER="$USER" --build-arg UID="$(id -u)" \
+       --build-arg IMX_USB_SHA256="$imx_usb_sha256" \
        -f "$thisDir/Dockerfile" \
        .

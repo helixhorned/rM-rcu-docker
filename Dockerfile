@@ -50,11 +50,13 @@ RUN sudo chown $USER:$USER . && \
 	cd imx_usb_loader && \
 	git checkout 48a85c0b84611c089cf870638fd1241619324b1d && \
 	make imx_usb && \
-	sha256sum imx_usb | grep -q ce100971f0ce32fa014970a1ee990550a302bf81d05bfadfd2c19702618e465e && \
 	mkdir /tmp/imx_usb_build && mv imx_usb /tmp/imx_usb_build && \
 	cd .. && rm -rf imx_usb_loader && \
 	sudo apt remove -y git make pkg-config gcc libusb-1.0-0-dev && \
 	sudo apt autoremove -y
+
+ARG IMX_USB_SHA256
+RUN sha256sum /tmp/imx_usb_build/imx_usb | grep -q "$IMX_USB_SHA256"
 
 USER root
 WORKDIR /usr/local/rcu/src
