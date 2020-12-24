@@ -132,11 +132,24 @@ if [ -e "$rcuConf" ]; then
     fi
 fi
 
+# Make sure that the device node for the rM in recovery mode -- used for the backup
+# functionality of RCU -- can be accessed. The mount and rule are overly broad, but unless
+# the system has set up additional udev rules, the only device node with a non-root (group)
+# owner should be that particular one, thanks to the setup of 'setup_udev_rules.sh'.
+#
+# Linux's 'Documentation/admin-guide/devices.txt' lists the device major number as
+#  "189 char	USB serial converters - alternate devices".
+UsbAccessArgs=( \
+  -v '/dev/bus/usb:/dev/bus/usb' \
+  --device-cgroup-rule 'c 189:* rw' \
+)
+
 exec docker run -it --rm \
        --net=host \
        --hostname=rM-rcu \
        --add-host='remarkable:10.11.99.1' \
        -e DISPLAY \
+       "${UsbAccessArgs[@]}" \
        -v "$HOME/.Xauthority:$guestHome/.Xauthority:ro" \
        -v "$HOME/$RcuDataDirSuffix:$guestHome/$RcuDataDirSuffix" \
        -v "$HOME/$DavisrConfigDirSuffix:$guestHome/$DavisrConfigDirSuffix" \
