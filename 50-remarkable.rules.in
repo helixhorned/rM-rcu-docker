@@ -1,0 +1,15 @@
+# These udev rules match:
+#
+#  Vendor: Freescale Semiconductor Inc
+#  Product: SE Blank MEGREZ
+#   "i.MX 6Solo/6DualLite SystemOnChip in RecoveryMode", according to
+#   https://devicehunt.com/view/type/usb/vendor/15A2/device/0061
+#
+# and make sure that the device node that is created as the tablet enters recovery mode
+# (which should reside under /dev/bus/usb/) can be read and written by the non-root user
+# setting up this rule. The setup of rM-rcu-docker's Docker image is such that this user
+# will have the same UID and GID as on the host system, which is one part of exposing this
+# access permission to a running container.
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15a2", ATTRS{idProduct}=="0061", MODE="0660", GROUP="@GROUP@"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15a2", ATTRS{idProduct}=="0063", MODE="0660", GROUP="@GROUP@"
