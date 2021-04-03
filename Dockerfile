@@ -1,4 +1,4 @@
-FROM ubuntu:groovy-20201125.2
+FROM ubuntu:groovy-20210325.1
 
 LABEL maintainer="Philipp Kutin <philipp.kutin@gmail.com>"
 
