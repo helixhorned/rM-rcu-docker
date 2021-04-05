@@ -4,6 +4,7 @@ source_rcu_tar="$1"
 
 IMAGE_NAME=remarkable-rcu
 MIN_RCU_VERSION=r2020-003
+MAX_RCU_VERSION=r2021-001
 
 TEMP_BASE_DIR=/dev/shm
 TEMP_DIR_TEMPLATE="$TEMP_BASE_DIR/rM-rcu-docker-XXXXXX"
@@ -14,11 +15,16 @@ if [ -z "$source_rcu_tar" ]; then
     echo " Creates a Docker image with the reMarkable Connection Utility extracted"
     echo " from the provided archive and all of its runtime dependencies installed."
     echo
-    echo " The image is named '$IMAGE_NAME:<tag>', where '<tag>' is e.g. '$MIN_RCU_VERSION'."
+    echo " The image is named '$IMAGE_NAME:<tag>', where '<tag>' is e.g. '$MAX_RCU_VERSION'."
     echo
     echo " RCU can be obtained from the utility author's web page:"
     echo "  http://www.davisr.me/projects/rcu/"
-    echo " Its source archives are named like 'source-rcu-r2020-003.tar.gz'."
+    echo
+    echo " Source archives for RCU versions supported by this script are named:"
+    echo "  - source-rcu-r2020-003.tar.gz"
+    echo "  - rcu-r2021.001-source.tar.gz"
+    echo " The actual version used is determined by a check on the SHA256 of the"
+    echo " passed archive file, though."
     echo
     exit 1
 fi
@@ -39,10 +45,12 @@ STRIP_DIR=
 if [ x"$source_sha256" = x"efee9c7843b1d8ebcd7c3f4ad4b9b31e72dc5fa7793549532e4e17c518291409" ]; then
     IMAGE_TAG=r2020-003
     STRIP_DIR=source-rcu-$IMAGE_TAG
+elif [ x"$source_sha256" = x"45cdaf1771798308cf15f0f8996d6e1562d5d060fe4c15dc406ee913a6b24fea" ]; then
+    IMAGE_TAG=r2021-001
 fi
 
 if [ -z "$IMAGE_TAG" ]; then
-    echo "ERROR: Unrecognized RCU source archive. (Currently, only $MIN_RCU_VERSION is supported.)" 1>&2
+    echo "ERROR: Unrecognized RCU source archive. (Supported: ${MIN_RCU_VERSION} and ${MAX_RCU_VERSION}.)" 1>&2
     exit 3
 fi
 
@@ -70,7 +78,11 @@ echo "Extracting from source archive..." 1>&2
 
 # Do not extract imx_usb binaries since we will be building our own.
 # Keep 'imx_usb.conf' though.
-tarOpts=("--strip-components=1" "$STRIP_DIR/rcu/" "--exclude=*/recovery_os_build/imx_usb.[flmsw]*")
+tarOpts=("--exclude=*/recovery_os_build/imx_usb.[flmsw]*")
+if [ ! -z "$STRIP_DIR" ]; then
+    tarOpts[1]="--strip-components=1"
+    tarOpts[2]="$STRIP_DIR/rcu/"
+fi
 if ! tar xf "$source_rcu_tar" "${tarOpts[@]}"; then
     echo "ERROR: failed extracting RCU source code." 1>&2
     exit 102
@@ -86,7 +98,7 @@ elif [ x"$machine" = x'x86_64' ]; then
     imx_usb_sha256=b2e0abd4578fc02e9d19e9897b170f2fe42bbabcf12c242657e1f80ab6754cb0
 else
     echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2
-    echo "INFO: consider contacting the rM-rcu-docker maintainer." 1>&2
+    echo "INFO: consider contacting the rM-rcu-docker maintainer <philipp.kutin@gmail.com>." 1>&2
     imx_usb_sha256='.'
 fi
 
