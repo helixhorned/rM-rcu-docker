@@ -2,6 +2,10 @@
 
 source_rcu_tar="$1"
 
+BASE_IMAGE_PREFIX=ubuntu:groovy
+BASE_IMAGE_DATE=-20210524
+BASE_IMAGE="${BASE_IMAGE_PREFIX}${BASE_IMAGE_DATE}"
+
 IMAGE_NAME=remarkable-rcu
 MIN_RCU_VERSION=r2020-003
 MAX_RCU_VERSION=r2021-001
@@ -15,7 +19,8 @@ if [ -z "$source_rcu_tar" ]; then
     echo " Creates a Docker image with the reMarkable Connection Utility extracted"
     echo " from the provided archive and all of its runtime dependencies installed."
     echo
-    echo " The image is named '$IMAGE_NAME:<tag>', where '<tag>' is e.g. '$MAX_RCU_VERSION'."
+    echo " The image is based on '$BASE_IMAGE' and named"
+    echo " '$IMAGE_NAME:<tag>', where '<tag>' is e.g. '$MAX_RCU_VERSION'."
     echo
     echo " RCU can be obtained from the utility author's web page:"
     echo "  http://www.davisr.me/projects/rcu/"
@@ -105,6 +110,7 @@ fi
 export DOCKER_BUILDKIT=1
 exec docker build \
        --tag "$fullName" \
+       --build-arg BASE_IMAGE="$BASE_IMAGE" \
        --build-arg USER="$USER" --build-arg UID="$(id -u)" \
        --build-arg IMX_USB_SHA256="$imx_usb_sha256" \
        -f "$thisDir/Dockerfile" \
