@@ -31,8 +31,8 @@ this allows to create images based on it on any processor architecture for which
 there are practical limitations:
 
 1. In order for the backup functionality to work (**EXPERIMENTAL** here!), some host-side
-   setup is first needed. Currently, it is specific to Linux and there are no plans for
-   other OSs.
+   setup is first needed. Currently, it is specific to Linux running the `systemd-udevd`
+   service. There are no plans for other OSs.
 
 2. The build of `imx_usb` carried out in the container is verified by comparing its SHA256
    to known values, which currently are available only on architectures `aarch64` and
@@ -83,6 +83,26 @@ Usage: ./run.sh [--shell|--help]
   must be canonical: redundant slashes, symlinks, and '.' or '..'
   as components are not allowed.
 ~~~~~~~~~~
+
+### **EXPERIMENTAL**: Backup functionality
+
+1. Read and on approval, run `setup_udev_rules.sh` which will set up
+   `/etc/udev/rules.d/50-remarkable.rules`.
+2. Shut down and restart the system for the rules to take effect.
+3. It should now be possible to take backups, which will reside on the host's
+   `$HOME/.local/share/davisr/rcu/backups`.
+
+Depending on the networking setup of the host, manual intervention may be needed at most
+twice (at the beginning and the end of the backup): if in the log, a message like
+
+```
+reconnecting to restore os...
+Unable to connect to 10.11.99.1: [Errno 101] Network is unreachable
+could not connect to the recovery os. 11 retries left
+```
+
+appears, on Debian-based systems (like Raspberry Pi OS) it should be resolved by an
+invocation of `sudo dhclient`.
 
 
 Acknowledgements
