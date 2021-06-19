@@ -72,7 +72,7 @@ Running
 ~~~~~~~~~~
 Usage: ./run.sh [--shell|--help]
 
-  A configuration file '$HOME/rcu-docker.conf'
+  A configuration file '$HOME/.config/davisr/rcu-docker.conf'
   may be created manually containing lines of the form
       mount-ro=<directory-suffix>
   or
