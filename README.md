@@ -18,6 +18,8 @@ Requirements
 
 [official Ubuntu Docker image]: https://hub.docker.com/_/ubuntu
 [Docker issue 40734]: https://github.com/moby/moby/issues/40734
+[this Stack Overflow question]: https://stackoverflow.com/questions/66319610/gpg-error-in-ubuntu-21-04-after-second-apt-get-update-during-docker-build
+[Ubuntu bug 1916485]: https://bugs.launchpad.net/ubuntu/+source/libseccomp/+bug/1916485
 [beta 64-bit Arm version]: https://downloads.raspberrypi.org/raspios_arm64/images/
 
 * A supported combination of OS and processor architecture <sup>**[1]**</sup>
@@ -38,8 +40,13 @@ there are practical limitations:
    to known values, which currently are available only on architectures `aarch64` and
    `x86_64`.
 
-3. Docker on 32-bit Raspberry Pi OS is incapable of building the image due to [Docker issue
-   40734]. However, Docker of the [beta 64-bit Arm version] builds and runs it successfully.
+3. A reasonably recent Docker/`libseccomp` must be present on the host: the symptoms
+   described in [this Stack Overflow question] have [Ubuntu bug 1916485] as the underlying
+   issue. This rules out Raspberry Pi OS Legacy (based on Debian Buster). On 32-bit RPi OS
+   Buster, Docker is incapable of building the image due to [Docker issue 40734] (not
+   re-tested with Bullseye). Hence, the [beta 64-bit Arm version] is recommended, where it
+   builds and runs successfully.
+
 </small>
 
 
@@ -52,7 +59,7 @@ Usage: ./build.sh <RCU source archive>
  Creates a Docker image with the reMarkable Connection Utility extracted
  from the provided archive and all of its runtime dependencies installed.
 
- The image is based on 'ubuntu:groovy-20210524' and named
+ The image is based on 'ubuntu:impish-20211102' and named
  'remarkable-rcu:<tag>', where '<tag>' is e.g. 'r2021-001'.
 
  RCU can be obtained from the utility author's web page:

@@ -106,7 +106,7 @@ fi
 RcuDataDirSuffix=".local/share/davisr/rcu"
 
 # Make sure the RCU data directory and the directory containing rcu.conf is owned by us
-# instead of root if it were created by Docker.
+# instead of root if it was created by Docker.
 mkdir -p "$HOME/$RcuDataDirSuffix"
 mkdir -p "$HOME/$DavisrConfigDirSuffix"
 

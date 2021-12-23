@@ -75,6 +75,6 @@ RUN chown root:root /tmp/imx_usb_build/imx_usb && \
 # found in LICENSE in the original source" though) and is shorter (~320 lines vs. ~800).
 # However, we *are* using the packaged Python, so it seems reasonable to present to the user
 # the according license.
-RUN cp -a /usr/share/doc/python3/copyright licenses/COPYING_PYTHON_3_8_6
+RUN cp -a /usr/share/doc/python3/copyright licenses/COPYING_PYTHON_3_9_7
 
 USER $USER
