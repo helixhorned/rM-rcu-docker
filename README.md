@@ -68,6 +68,7 @@ Usage: ./build.sh <RCU source archive>
  Source archives for RCU versions supported by this script are named:
   - source-rcu-r2020-003.tar.gz
   - rcu-r2021.001-source.tar.gz
+  - rcu-r2021.002-source.tar.gz
  The actual version used is determined by a check on the SHA256 of the
  passed archive file, though.
 ~~~~~~~~~~

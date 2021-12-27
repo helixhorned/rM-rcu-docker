@@ -31,7 +31,7 @@ fi
 ## ----------
 
 # TODO: add an argument once we support more than one version.
-DEFAULT_RCU_VERSION=r2021-001
+DEFAULT_RCU_VERSION=r2021-002
 
 guestHome="/home/$USER"
 

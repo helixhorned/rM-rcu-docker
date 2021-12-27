@@ -15,9 +15,11 @@ RUN apt install -y libxcb-xinerama0 fontconfig
 
 # Required Python modules
 RUN bash -c "apt install -y python3-pyside2.qt{core,gui,widgets,svg,network,printsupport,uitools,xml}"
-RUN bash -c "apt install -y python3-{paramiko,pdfrw}"
+RUN bash -c "apt install -y python3-{paramiko,pdfrw}"  # TODO: 'pdfrw' must not be installed for r2021-002.
 # r2021-001:
 RUN bash -c "apt install -y python3-pil"
+# r2021-002:
+RUN bash -c "apt install -y python3-certifi"
 
 # imx_usb_loader:
 RUN apt install -y libusb-1.0-0 sudo

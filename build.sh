@@ -8,7 +8,7 @@ BASE_IMAGE="${BASE_IMAGE_PREFIX}${BASE_IMAGE_DATE}"
 
 IMAGE_NAME=remarkable-rcu
 MIN_RCU_VERSION=r2020-003
-MAX_RCU_VERSION=r2021-001
+MAX_RCU_VERSION=r2021-002
 
 TEMP_BASE_DIR=/dev/shm
 TEMP_DIR_TEMPLATE="$TEMP_BASE_DIR/rM-rcu-docker-XXXXXX"
@@ -28,6 +28,7 @@ if [ -z "$source_rcu_tar" ]; then
     echo " Source archives for RCU versions supported by this script are named:"
     echo "  - source-rcu-r2020-003.tar.gz"
     echo "  - rcu-r2021.001-source.tar.gz"
+    echo "  - rcu-r2021.002-source.tar.gz"
     echo " The actual version used is determined by a check on the SHA256 of the"
     echo " passed archive file, though."
     echo
@@ -52,10 +53,12 @@ if [ x"$source_sha256" = x"efee9c7843b1d8ebcd7c3f4ad4b9b31e72dc5fa7793549532e4e1
     STRIP_DIR=source-rcu-$IMAGE_TAG
 elif [ x"$source_sha256" = x"45cdaf1771798308cf15f0f8996d6e1562d5d060fe4c15dc406ee913a6b24fea" ]; then
     IMAGE_TAG=r2021-001
+elif [ x"$source_sha256" = x"1c0ad2da79d5f15ccf920c479c4fa11ce1dcef88c38d897dab09c1ee34b808aa" ]; then
+    IMAGE_TAG=r2021-002
 fi
 
 if [ -z "$IMAGE_TAG" ]; then
-    echo "ERROR: Unrecognized RCU source archive. (Supported: ${MIN_RCU_VERSION} and ${MAX_RCU_VERSION}.)" 1>&2
+    echo "ERROR: Unrecognized RCU source archive. (Supported: releases between ${MIN_RCU_VERSION} and ${MAX_RCU_VERSION}.)" 1>&2
     exit 3
 fi
 
