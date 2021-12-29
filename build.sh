@@ -46,6 +46,10 @@ echo "Checking SHA256 against known versions of RCU..." 1>&2
 
 source_sha256=$(sha256sum "$source_rcu_tar" | sed 's/ .*//')
 
+additional_packages="python3-paramiko"
+additional_packages="$additional_packages python3-pil"  # r2021.001
+additional_packages="$additional_packages python3-certifi"  # r2021.002
+
 IMAGE_TAG=
 STRIP_DIR=
 if [ x"$source_sha256" = x"efee9c7843b1d8ebcd7c3f4ad4b9b31e72dc5fa7793549532e4e17c518291409" ]; then
@@ -60,6 +64,11 @@ fi
 if [ -z "$IMAGE_TAG" ]; then
     echo "ERROR: Unrecognized RCU source archive. (Supported: releases between ${MIN_RCU_VERSION} and ${MAX_RCU_VERSION}.)" 1>&2
     exit 3
+fi
+
+if [[ x"$IMAGE_TAG" == x'r2020-003' || x"$IMAGE_TAG" == x'r2021-001' ]]; then
+    additional_packages="$additional_packages python3-pdfrw"
+# else: bundled by RCU.
 fi
 
 if ! tempDir=$(mktemp -d "$TEMP_DIR_TEMPLATE"); then
@@ -114,6 +123,7 @@ export DOCKER_BUILDKIT=1
 exec docker build \
        --tag "$fullName" \
        --build-arg BASE_IMAGE="$BASE_IMAGE" \
+       --build-arg ADDITIONAL_PACKAGES="$additional_packages" \
        --build-arg USER="$USER" --build-arg UID="$(id -u)" \
        --build-arg IMX_USB_SHA256="$imx_usb_sha256" \
        -f "$thisDir/Dockerfile" \
