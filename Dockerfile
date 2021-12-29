@@ -7,7 +7,9 @@ RUN apt update
 
 ## RCU runtime dependencies
 
-RUN apt install -y language-pack-en-base
+# Install only the one necessary additional locale (code from Ubuntu at Docker Hub):
+RUN apt install -y locales && \
+	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 RUN apt install -y libgl1
 # r2020-003:
