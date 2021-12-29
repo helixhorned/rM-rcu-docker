@@ -78,7 +78,7 @@ Running
 -------
 
 ~~~~~~~~~~
-Usage: ./run.sh [--shell|--help]
+Usage: ./run.sh [--shell|--help|-- (args to RCU's main.py ...)]
 
   A configuration file '$HOME/.config/davisr/rcu-docker.conf'
   may be created manually containing lines of the form

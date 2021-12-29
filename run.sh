@@ -4,14 +4,20 @@ DavisrConfigDirSuffix=".config/davisr"
 OurConfFile="$HOME/$DavisrConfigDirSuffix/rcu-docker.conf"
 
 runShell=
+mainArgs=()
+
 if [ -z "$1" ]; then
     runShell=false
 elif [ x"$1" = x"--shell" ]; then
     runShell=true
+elif [ x"$1" == x'--' ]; then
+	runShell=false
+	shift
+	mainArgs=("$@")
 fi
 
 if [ -z "$runShell" ]; then
-    echo "Usage: $0 [--shell|--help]"
+    echo "Usage: $0 [--help|--shell|-- (args to RCU's main.py ...)]"
     echo
     echo "  A configuration file '$OurConfFile'"
     echo "  may be created manually containing lines of the form"
@@ -98,7 +104,7 @@ if [ $runShell = true ]; then
     TrailingArgs=()
 else
     EntryPointArgs=(--entrypoint python3)
-    TrailingArgs=(-B main.py)
+    TrailingArgs=(-B main.py "${mainArgs[@]}")
 fi
 
 ## ----------
