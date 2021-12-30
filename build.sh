@@ -115,7 +115,7 @@ elif [ x"$machine" = x'x86_64' ]; then
     imx_usb_sha256=79a2a09920aea01ccf9ac8aa8aac631f77508d583a8703581e68e2f524658dd0
 else
     echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2
-    echo "INFO: consider contacting the rM-rcu-docker maintainer <philipp.kutin@gmail.com>." 1>&2
+    echo "INFO: consider contacting the rM-rcu-docker maintainer <dev@helixhorned.de>." 1>&2
     imx_usb_sha256='.'
 fi
 

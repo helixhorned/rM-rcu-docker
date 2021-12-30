@@ -1,7 +1,7 @@
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
-LABEL maintainer="Philipp Kutin <philipp.kutin@gmail.com>"
+LABEL maintainer="Philipp Kutin <dev@helixhorned.de>"
 
 RUN apt update
 
