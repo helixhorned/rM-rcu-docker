@@ -24,8 +24,8 @@ Requirements
 
 * A supported combination of OS and processor architecture <sup>**[1]**</sup>
 * Docker
-* The source archive for a supported RCU release
-* sufficient disk space for the created Docker image (order of magnitude: 1 GB)
+* The source archive of a supported RCU release
+* Sufficient disk space for the created Docker image (order of magnitude: 1 GB)
 
 <sup>**[1]**</sup> <small>The `Dockerfile` itself is based on an Ubuntu image. In theory,
 this allows to create images based on it on any processor architecture for which there is an
@@ -59,7 +59,7 @@ Usage: ./build.sh <RCU source archive>
  Creates a Docker image with the reMarkable Connection Utility extracted
  from the provided archive and all of its runtime dependencies installed.
 
- The image is based on 'ubuntu:impish-20211102' and named
+ The image is based on 'ubuntu:jammy-20220815' and named
  'remarkable-rcu:<tag>', where '<tag>' is e.g. 'r2021-001'.
 
  RCU can be obtained from the utility author's web page:
@@ -94,7 +94,7 @@ Usage: ./run.sh [--shell|--help|-- (args to RCU's main.py ...)]
 
 ### **EXPERIMENTAL**: Backup functionality
 
-1. Read and on approval, run `setup_udev_rules.sh` which will set up
+1. Read and in case you approve, run `setup_udev_rules.sh` which will set up
    `/etc/udev/rules.d/50-remarkable.rules`.
 2. Shut down and restart the system for the rules to take effect.
 3. It should now be possible to take backups, which will reside on the host's
