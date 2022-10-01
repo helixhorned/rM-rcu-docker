@@ -123,7 +123,7 @@ utility on not officially supported platforms.
 License
 -------
 
-Copyright (C) 2020-2021 Philipp Kutin.
+Copyright (C) 2020-2022 Philipp Kutin.
 
 Distributed under the terms of the [MIT license](LICENSE.MIT.txt).
 
