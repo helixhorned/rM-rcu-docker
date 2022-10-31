@@ -46,10 +46,9 @@ COPY /rcu rcu
 #  of commit 30b43d6977 (May 17 2020; note, imx_usb_loader is deprecated in favor of 'uuu').
 
 USER $USER
-WORKDIR /home/$USER/temp
+WORKDIR /tmp
 
-RUN sudo chown $USER:$USER . && \
-	sudo apt install -y git make pkg-config gcc libusb-1.0-0-dev && \
+RUN sudo apt install -y git make pkg-config gcc libusb-1.0-0-dev && \
 	git clone https://github.com/boundarydevices/imx_usb_loader.git && \
 	cd imx_usb_loader && \
 	git checkout 48a85c0b84611c089cf870638fd1241619324b1d && \

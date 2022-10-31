@@ -110,9 +110,9 @@ echo "Building Docker image '$fullName'..." 1>&2
 
 machine=$(uname -m)
 if [ x"$machine" = x'aarch64' ]; then
-    imx_usb_sha256=02a1817545e34b864d15898b9912f18ceb17316cb8955b49f65f44aeab5bab43
+    imx_usb_sha256=49417f47525c10c7abf0e6c7f8ea03793211922660bbc47811991a9a70e29cd4
 elif [ x"$machine" = x'x86_64' ]; then
-    imx_usb_sha256=7dea9781759aa753195e330c3f65c70fdfaa27ba6b03cef2f54258d5d7f26cbb
+    imx_usb_sha256=765bbdda5f717015f1be809613eac81887deb59e6d1bff734bbade1680ca8b96
 else
     echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2
     echo "INFO: consider contacting the rM-rcu-docker maintainer <dev@helixhorned.de>." 1>&2
