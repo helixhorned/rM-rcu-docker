@@ -58,7 +58,7 @@ Usage: ./build.sh <RCU source archive>
  Creates a Docker image with the reMarkable Connection Utility extracted
  from the provided archive and all of its runtime dependencies installed.
 
- The image is based on 'ubuntu:jammy-20221020' and named
+ The image is based on 'ubuntu:jammy-20231211.1' and named
  'remarkable-rcu:<tag>', where '<tag>' is e.g. 'r2021-001'.
 
  RCU can be obtained from the utility author's web page:
