@@ -20,7 +20,6 @@ Requirements
 [Docker issue 40734]: https://github.com/moby/moby/issues/40734
 [this Stack Overflow question]: https://stackoverflow.com/questions/66319610/gpg-error-in-ubuntu-21-04-after-second-apt-get-update-during-docker-build
 [Ubuntu bug 1916485]: https://bugs.launchpad.net/ubuntu/+source/libseccomp/+bug/1916485
-[beta 64-bit Arm version]: https://downloads.raspberrypi.org/raspios_arm64/images/
 
 * A supported combination of OS and processor architecture <sup>**[1]**</sup>
 * Docker
@@ -44,7 +43,7 @@ there are practical limitations:
    described in [this Stack Overflow question] have [Ubuntu bug 1916485] as the underlying
    issue. This rules out Raspberry Pi OS Legacy (based on Debian Buster). On 32-bit RPi OS
    Buster, Docker is incapable of building the image due to [Docker issue 40734] (not
-   re-tested with Bullseye). Hence, the [beta 64-bit Arm version] is recommended, where it
+   re-tested with Bullseye). Hence, the 64-bit Arm version is recommended, where it
    builds and runs successfully.
 
 </small>
