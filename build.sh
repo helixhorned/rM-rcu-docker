@@ -7,8 +7,7 @@ BASE_IMAGE_DATE=-20231211.1
 BASE_IMAGE="${BASE_IMAGE_PREFIX}${BASE_IMAGE_DATE}"
 
 IMAGE_NAME=remarkable-rcu
-MIN_RCU_VERSION=r2020-003
-MAX_RCU_VERSION=r2021-002
+MAX_RCU_VERSION=d2023-001l
 
 TEMP_BASE_DIR=/dev/shm
 TEMP_DIR_TEMPLATE="$TEMP_BASE_DIR/rM-rcu-docker-XXXXXX"
@@ -29,6 +28,7 @@ if [ -z "$source_rcu_tar" ]; then
     echo "  - source-rcu-r2020-003.tar.gz"
     echo "  - rcu-r2021.001-source.tar.gz"
     echo "  - rcu-r2021.002-source.tar.gz"
+    echo "  - rcu-d2023.001l-source.tar.gz"
     echo " The actual version used is determined by a check on the SHA256 of the"
     echo " passed archive file, though."
     echo
@@ -59,16 +59,25 @@ elif [ "$source_sha256" = "45cdaf1771798308cf15f0f8996d6e1562d5d060fe4c15dc406ee
     IMAGE_TAG=r2021-001
 elif [ "$source_sha256" = "1c0ad2da79d5f15ccf920c479c4fa11ce1dcef88c38d897dab09c1ee34b808aa" ]; then
     IMAGE_TAG=r2021-002
+elif [ "$source_sha256" = "695d1ee5404ad88b683544d053d27703ff85f63ac0c96ac4edec4777f928f8e8" ]; then
+    IMAGE_TAG=d2023-001l
 fi
 
 if [ -z "$IMAGE_TAG" ]; then
-    echo "ERROR: Unrecognized RCU source archive. (Supported: releases between ${MIN_RCU_VERSION} and ${MAX_RCU_VERSION}.)" 1>&2
+    echo "ERROR: Unrecognized RCU source archive." 1>&2
     exit 3
 fi
+
+version_year_seq=${IMAGE_TAG:1:8}
+version_year_seq=${version_year_seq/-/}
 
 if [[ "$IMAGE_TAG" == 'r2020-003' || "$IMAGE_TAG" == 'r2021-001' ]]; then
     additional_packages="$additional_packages python3-pdfrw"
 # else: bundled by RCU.
+fi
+
+if [ "$version_year_seq" -ge 2023001 ]; then
+    additional_packages="$additional_packages python3-pdfminer python3-pikepdf python3-protobuf python3-six"
 fi
 
 if ! tempDir=$(mktemp -d "$TEMP_DIR_TEMPLATE"); then

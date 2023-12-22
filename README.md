@@ -59,7 +59,7 @@ Usage: ./build.sh <RCU source archive>
  from the provided archive and all of its runtime dependencies installed.
 
  The image is based on 'ubuntu:jammy-20231211.1' and named
- 'remarkable-rcu:<tag>', where '<tag>' is e.g. 'r2021-001'.
+ 'remarkable-rcu:<tag>', where '<tag>' is e.g. 'd2023-001l'.
 
  RCU can be obtained from the utility author's web page:
   http://www.davisr.me/projects/rcu/
@@ -68,6 +68,7 @@ Usage: ./build.sh <RCU source archive>
   - source-rcu-r2020-003.tar.gz
   - rcu-r2021.001-source.tar.gz
   - rcu-r2021.002-source.tar.gz
+  - rcu-d2023.001l-source.tar.gz
  The actual version used is determined by a check on the SHA256 of the
  passed archive file, though.
 ~~~~~~~~~~
@@ -77,7 +78,7 @@ Running
 -------
 
 ~~~~~~~~~~
-Usage: ./run.sh [--shell|--help|-- (args to RCU's main.py ...)]
+Usage: ./run.sh [--help|--shell|-- (args to RCU's main.py ...)]
 
   A configuration file '$HOME/.config/davisr/rcu-docker.conf'
   may be created manually containing lines of the form
