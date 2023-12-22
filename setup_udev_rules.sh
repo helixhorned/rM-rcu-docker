@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ x"$(id -u)" = x'0' ]; then
+if [ "$(id -u)" = '0' ]; then
     echo "ERROR: this script should be run as non-root." >&2
     exit 1
 fi

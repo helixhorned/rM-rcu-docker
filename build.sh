@@ -52,12 +52,12 @@ additional_packages="$additional_packages python3-certifi"  # r2021.002
 
 IMAGE_TAG=
 STRIP_DIR=
-if [ x"$source_sha256" = x"efee9c7843b1d8ebcd7c3f4ad4b9b31e72dc5fa7793549532e4e17c518291409" ]; then
+if [ "$source_sha256" = "efee9c7843b1d8ebcd7c3f4ad4b9b31e72dc5fa7793549532e4e17c518291409" ]; then
     IMAGE_TAG=r2020-003
     STRIP_DIR=source-rcu-$IMAGE_TAG
-elif [ x"$source_sha256" = x"45cdaf1771798308cf15f0f8996d6e1562d5d060fe4c15dc406ee913a6b24fea" ]; then
+elif [ "$source_sha256" = "45cdaf1771798308cf15f0f8996d6e1562d5d060fe4c15dc406ee913a6b24fea" ]; then
     IMAGE_TAG=r2021-001
-elif [ x"$source_sha256" = x"1c0ad2da79d5f15ccf920c479c4fa11ce1dcef88c38d897dab09c1ee34b808aa" ]; then
+elif [ "$source_sha256" = "1c0ad2da79d5f15ccf920c479c4fa11ce1dcef88c38d897dab09c1ee34b808aa" ]; then
     IMAGE_TAG=r2021-002
 fi
 
@@ -66,7 +66,7 @@ if [ -z "$IMAGE_TAG" ]; then
     exit 3
 fi
 
-if [[ x"$IMAGE_TAG" == x'r2020-003' || x"$IMAGE_TAG" == x'r2021-001' ]]; then
+if [[ "$IMAGE_TAG" == 'r2020-003' || "$IMAGE_TAG" == 'r2021-001' ]]; then
     additional_packages="$additional_packages python3-pdfrw"
 # else: bundled by RCU.
 fi
@@ -96,7 +96,7 @@ echo "Extracting from source archive..." 1>&2
 # Do not extract imx_usb binaries since we will be building our own.
 # Keep 'imx_usb.conf' though.
 tarOpts=("--exclude=*/recovery_os_build/imx_usb.[flmsw]*")
-if [ ! -z "$STRIP_DIR" ]; then
+if [ -n "$STRIP_DIR" ]; then
     tarOpts[1]="--strip-components=1"
     tarOpts[2]="$STRIP_DIR/rcu/"
 fi
@@ -109,9 +109,9 @@ fullName="$IMAGE_NAME":"$IMAGE_TAG"
 echo "Building Docker image '$fullName'..." 1>&2
 
 machine=$(uname -m)
-if [ x"$machine" = x'aarch64' ]; then
+if [ "$machine" = 'aarch64' ]; then
     imx_usb_sha256=49417f47525c10c7abf0e6c7f8ea03793211922660bbc47811991a9a70e29cd4
-elif [ x"$machine" = x'x86_64' ]; then
+elif [ "$machine" = 'x86_64' ]; then
     imx_usb_sha256=765bbdda5f717015f1be809613eac81887deb59e6d1bff734bbade1680ca8b96
 else
     echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2

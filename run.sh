@@ -8,9 +8,9 @@ mainArgs=()
 
 if [ -z "$1" ]; then
     runShell=false
-elif [ x"$1" = x"--shell" ]; then
+elif [ "$1" = "--shell" ]; then
     runShell=true
-elif [ x"$1" == x'--' ]; then
+elif [ "$1" == '--' ]; then
 	runShell=false
 	shift
 	mainArgs=("$@")
