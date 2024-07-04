@@ -27,6 +27,7 @@ RUN apt install -y libusb-1.0-0 sudo
 
 ARG UID
 ARG USER
+RUN if [ $UID = 1000 ]; then deluser ubuntu; fi
 RUN adduser --disabled-password --uid $UID $USER
 # Allow the non-root user to invoke 'sudo' without password:
 RUN adduser $USER sudo
@@ -75,6 +76,6 @@ RUN chown root:root /tmp/imx_usb_build/imx_usb && \
 # found in LICENSE in the original source" though) and is shorter (~320 lines vs. ~800).
 # However, we *are* using the packaged Python, so it seems reasonable to present to the user
 # the according license.
-RUN cp -a /usr/share/doc/python3/copyright licenses/COPYING_PYTHON_3_10_12
+RUN cp -a /usr/share/doc/python3/copyright licenses/COPYING_PYTHON_3_12_3
 
 USER $USER

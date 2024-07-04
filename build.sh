@@ -2,8 +2,8 @@
 
 source_rcu_tar="$1"
 
-BASE_IMAGE_PREFIX=ubuntu:jammy
-BASE_IMAGE_DATE=-20231211.1
+BASE_IMAGE_PREFIX=ubuntu:noble
+BASE_IMAGE_DATE=-20240605
 BASE_IMAGE="${BASE_IMAGE_PREFIX}${BASE_IMAGE_DATE}"
 
 IMAGE_NAME=remarkable-rcu
@@ -119,9 +119,9 @@ echo "Building Docker image '$fullName'..." 1>&2
 
 machine=$(uname -m)
 if [ "$machine" = 'aarch64' ]; then
-    imx_usb_sha256=0de9a50ae860bbca1f433a0b3b69a817a4a5c9f07463cf39b2a296eb8d525efe
+    imx_usb_sha256=a1bf27d0e19c3025e3f7d9a965193df3379bfe702426655f48463851237a1fb5
 elif [ "$machine" = 'x86_64' ]; then
-    imx_usb_sha256=b2ddf8f0e4687f5a067632842abf51a46ebbbe4c136eb9d3e44bafafa2412804
+    imx_usb_sha256=734ca1e050a0c2189c2c7a4028d1088b8013ff35e916eaf77bd08d245eeca106
 else
     echo "WARNING: omitting SHA256 check for 'imx_usb' binary on $machine machine." 1>&2
     echo "INFO: consider contacting the rM-rcu-docker maintainer <dev@helixhorned.de>." 1>&2
