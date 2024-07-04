@@ -59,7 +59,7 @@ Usage: ./build.sh <RCU source archive>
  from the provided archive and all of its runtime dependencies installed.
 
  The image is based on 'ubuntu:noble-20240605' and named
- 'remarkable-rcu:<tag>', where '<tag>' is e.g. 'd2023-001l'.
+ 'remarkable-rcu:<tag>', where '<tag>' is e.g. 'd2024-001p'.
 
  RCU can be obtained from the utility author's web page:
   http://www.davisr.me/projects/rcu/
@@ -69,6 +69,7 @@ Usage: ./build.sh <RCU source archive>
   - rcu-r2021.001-source.tar.gz
   - rcu-r2021.002-source.tar.gz
   - rcu-d2023.001l-source.tar.gz
+  - rcu-d2024.001p-source.tar.gz
  The actual version used is determined by a check on the SHA256 of the
  passed archive file, though.
 ~~~~~~~~~~
