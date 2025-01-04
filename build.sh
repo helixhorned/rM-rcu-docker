@@ -7,7 +7,7 @@ BASE_IMAGE_DATE=-20241118.1
 BASE_IMAGE="${BASE_IMAGE_PREFIX}${BASE_IMAGE_DATE}"
 
 IMAGE_NAME=remarkable-rcu
-MAX_RCU_VERSION=d2024-001p
+MAX_RCU_VERSION=d2024-001q
 
 TEMP_BASE_DIR=/dev/shm
 TEMP_DIR_TEMPLATE="$TEMP_BASE_DIR/rM-rcu-docker-XXXXXX"
@@ -30,6 +30,7 @@ if [ -z "$source_rcu_tar" ]; then
     echo "  - rcu-r2021.002-source.tar.gz"
     echo "  - rcu-d2023.001l-source.tar.gz"
     echo "  - rcu-d2024.001p-source.tar.gz"
+    echo "  - rcu-d2024.001q-source.tar.gz"
     echo " The actual version used is determined by a check on the SHA256 of the"
     echo " passed archive file, though."
     echo
@@ -64,6 +65,8 @@ elif [ "$source_sha256" = "695d1ee5404ad88b683544d053d27703ff85f63ac0c96ac4edec4
     IMAGE_TAG=d2023-001l
 elif [ "$source_sha256" = "16d74f72fd8903f7c9783da31bf91a74f8610d26df1f640b8e3bcb754649a594" ]; then
     IMAGE_TAG=d2024-001p
+elif [ "$source_sha256" = "630936f202413124902fa8c470713c876e7728eb17206c1539a83a3c15acf248" ]; then
+    IMAGE_TAG=d2024-001q
 fi
 
 if [ -z "$IMAGE_TAG" ]; then
