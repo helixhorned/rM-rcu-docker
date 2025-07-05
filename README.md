@@ -1,6 +1,8 @@
 
-rM-rcu-docker: reMarkable Connection Utility in a Docker wrapping
+\[NOT MAINTAINED HERE\] rM-rcu-docker: reMarkable Connection Utility in a Docker wrapping
 =================================================================
+
+**This project has moved.**
 
 Introduction
 ------------
